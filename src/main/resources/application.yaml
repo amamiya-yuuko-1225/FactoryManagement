@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    username: factory
+    password: 'factory'
+    url: jdbc:mysql://127.0.0.1:3306/factory?characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
