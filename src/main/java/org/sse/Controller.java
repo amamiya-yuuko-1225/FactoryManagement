@@ -3,15 +3,15 @@ package org.sse;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.gson.Gson;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.sse.mapper.*;
 import org.sse.pojo.*;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.TransferQueue;
 
 @RestController
 @SuppressWarnings("all")
@@ -28,21 +28,21 @@ public class Controller {
         return gson.toJson(factories);
     }
     //通过设置了条件的对象进行条件查询
-    @GetMapping("getFactoriesByQuery")
+    @PostMapping("getFactoriesByQuery")
     public String getFactoriesByQuery(@RequestBody Factory factory){
         QueryWrapper<Factory> factoryQueryWrapper = new QueryWrapper<>(factory);
         List<Factory> factoryList = facrotyMapper.selectList(factoryQueryWrapper);
         return gson.toJson(factoryList);
     }
-    @GetMapping("addFactory")
+    @PostMapping("addFactory")
     public void addFactory (@RequestBody Factory factory) {
         facrotyMapper.insert(factory);
     }
-    @GetMapping("deleteFactory")
+    @PostMapping("deleteFactory")
     public void deleteFactory (@RequestBody Factory factory) {
         facrotyMapper.deleteById(factory);
     }
-    @GetMapping("updateFactory")
+    @PostMapping("updateFactory")
     public void updateFactory (@RequestBody Factory factory) {
         facrotyMapper.updateById(factory);
     }
@@ -64,22 +64,22 @@ public class Controller {
         return gson.toJson(devices);
     }
     //通过设置了条件的对象进行条件查询
-    @GetMapping("getDeviceByQuery")
+    @PostMapping("getDeviceByQuery")
     public String getDeviceByQuery(@RequestBody Device device){
         QueryWrapper<Device> deviceQueryWrapper = new QueryWrapper<>(device);
         List<Device> deviceList = deviceMapper.selectList(deviceQueryWrapper);
         return gson.toJson(deviceList);
     }
 
-    @GetMapping("addDevice")
+    @PostMapping("addDevice")
     public void addDevice (@RequestBody Device device) {
         deviceMapper.insert(device);
     }
-    @GetMapping("deleteDevice")
+    @PostMapping("deleteDevice")
     public void deleteDevice (@RequestBody Device device) {
         deviceMapper.deleteById(device);
     }
-    @GetMapping("updateDevice")
+    @PostMapping("updateDevice")
     public void updateDevice (@RequestBody Device device) {
         deviceMapper.updateById(device);
     }
@@ -109,22 +109,22 @@ public class Controller {
         return gson.toJson(products);
     }
     //通过设置了条件的对象进行条件查询
-    @GetMapping("getProductBYQuery")
+    @PostMapping("getProductBYQuery")
     public String getProductByQuery(@RequestBody Product product){
         QueryWrapper<Product> productQueryWrapper = new QueryWrapper<>(product);
         List<Product> productList = productMapper.selectList(productQueryWrapper);
         return gson.toJson(productList);
     }
 
-    @GetMapping("addProduct")
+    @PostMapping("addProduct")
     public void addProduct (@RequestBody Product product) {
         productMapper.insert(product);
     }
-    @GetMapping("deleteProduct")
+    @PostMapping("deleteProduct")
     public void deleteProduct (@RequestBody Product product) {
         productMapper.deleteById(product);
     }
-    @GetMapping("updateProduct")
+    @PostMapping("updateProduct")
     public void updateProduct (@RequestBody Product product) {
         productMapper.updateById(product);
     }
@@ -139,21 +139,21 @@ public class Controller {
         return gson.toJson(orders);
     }
     //通过设置了条件的对象进行条件查询
-    @GetMapping("getOrderByQuery")
+    @PostMapping("getOrderByQuery")
     public String getOrderBYQuery(@RequestBody Order order){
         QueryWrapper<Order> orderQueryWrapper = new QueryWrapper<>(order);
         List<Order> orderList = orderMapper.selectList(orderQueryWrapper);
         return gson.toJson(orderList);
     }
-    @GetMapping("addOrder")
+    @PostMapping("addOrder")
     public void addOrder (@RequestBody Order order) {
         orderMapper.insert(order);
     }
-    @GetMapping("deleteOrder")
+    @PostMapping("deleteOrder")
     public void deleteOrder (@RequestBody Order order) {
         orderMapper.deleteById(order);
     }
-    @GetMapping("updateOrder")
+    @PostMapping("updateOrder")
     public void updateOrder (@RequestBody Order order) {
         orderMapper.updateById(order);
     }
@@ -176,15 +176,15 @@ public class Controller {
     @Autowired
     private GeneratePlanMapper generatePlanMapper;
 
-    @GetMapping("addGeneratePlan")
+    @PostMapping("addGeneratePlan")
     public void addGeneratePlan (@RequestBody GeneratePlan generatePlan) {
         generatePlanMapper.insert(generatePlan);
     }
-    @GetMapping("deleteGeneratePlan")
+    @PostMapping("deleteGeneratePlan")
     public void deleteGeneratePlan (@RequestBody GeneratePlan generatePlan) {
         generatePlanMapper.deleteById(generatePlan);
     }
-    @GetMapping("updateGeneratePlan")
+    @PostMapping("updateGeneratePlan")
     public void updateGeneratePlan (@RequestBody GeneratePlan generatePlan) {
         generatePlanMapper.updateById(generatePlan);
     }
@@ -203,6 +203,34 @@ public class Controller {
         return count;
     }
 
-    //生产调度（待续）-----------------------------------------------------------------------------------------
+    //生产调度-----------------------------------------------------------------------------------------
+
+    //根据一个变化量（产品对象形式）更新一个产品、订单、生产计划,返回更新后的生产计划
+    @PostMapping("updatePlanByProduct")
+    public String updataPlan(Product product){
+        //更新产品数量
+        QueryWrapper<Product> queryWrapperProduct = new QueryWrapper<>();
+        queryWrapperProduct.eq("id",product.getId());
+        Product exsiting_product = (Product) productMapper.selectObjs(queryWrapperProduct);
+        exsiting_product.setAmount(exsiting_product.getAmount()+product.getAmount());
+        this.updateProduct(exsiting_product);
+
+        //更新订单数量
+        QueryWrapper<Order> queryWrapperOrder = new QueryWrapper<>();
+        queryWrapperOrder.eq("product_id",product.getId());
+        Order exsiting_order = (Order) orderMapper.selectObjs(queryWrapperOrder);
+        exsiting_order.setExisting_amount(exsiting_product.getAmount());
+        this.updateOrder(exsiting_order);
+
+        //更新计划
+        QueryWrapper<GeneratePlan> queryWrapperPlan = new QueryWrapper<>();
+        queryWrapperPlan.eq("product_id",product.getId());
+        GeneratePlan exsiting_Plan = (GeneratePlan) generatePlanMapper.selectObjs(queryWrapperPlan);
+        exsiting_Plan.setExisting_amount(exsiting_product.getAmount());
+        this.updateGeneratePlan(exsiting_Plan);
+
+        //返回更新后的生产计划
+        return gson.toJson(exsiting_Plan);
+    }
 
 }
