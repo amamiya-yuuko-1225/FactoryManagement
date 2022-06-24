@@ -8,8 +8,8 @@ public class Order {
     private long id;
     private String buyer;
     private long product_id;
-    private long target_amount;
-    private long existing_amount;
+    private int target_amount;
+    private int existing_amount;
     private int status;
-    private long value;
+    private int value;
 }

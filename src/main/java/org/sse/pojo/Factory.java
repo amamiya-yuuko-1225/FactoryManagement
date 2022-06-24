@@ -2,9 +2,13 @@ package org.sse.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Factory {
     @TableId(type = IdType.AUTO)
     private long id;
@@ -13,4 +17,5 @@ public class Factory {
     private String owner;
     private int profit;
     private int scale;
+
 }

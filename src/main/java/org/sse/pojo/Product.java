@@ -8,7 +8,7 @@ public class Product {
     @TableId(type = IdType.AUTO)
     private long id;
     private String product_name;
-    private long amount;
-    private long price;
+    private int amount;
+    private int price;
     private Device device;//一对多
 }

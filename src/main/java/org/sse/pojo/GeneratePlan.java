@@ -8,8 +8,8 @@ public class GeneratePlan {
     @TableId(type = IdType.AUTO)
     private long id;
     private long product_id;
-    private long target_amount;
-    private long existing_amount;
+    private int target_amount;
+    private int existing_amount;
     private String start_time;
     private String deadline;
     private long factory_id;
