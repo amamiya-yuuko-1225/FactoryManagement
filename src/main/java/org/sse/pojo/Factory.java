@@ -8,6 +8,7 @@ import lombok.Data;
 public class Factory {
     @TableId(type = IdType.AUTO)
     private long id;
+    
     private String factory_name;
     private String owner;
     private int profit;
