@@ -10,5 +10,6 @@ public class Product {
     private String product_name;
     private int amount;
     private int price;
-    private Device device;//一对多
+    private long device_id;
+
 }

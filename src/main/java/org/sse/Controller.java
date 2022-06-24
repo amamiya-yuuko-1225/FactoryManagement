@@ -3,7 +3,6 @@ package org.sse;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.gson.Gson;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +52,6 @@ public class Controller {
         long count =  facrotyMapper.selectCount(null);
         return count;
     }
-
 
     //Device-----------------------------------------------------------------------------------------------------
 

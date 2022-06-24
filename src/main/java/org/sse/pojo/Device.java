@@ -10,6 +10,6 @@ public class Device {
     private long id;
     private String device_name;
     private int status;
-    private List<Product> products;//一对多
+    private String product_id;
 
 }
