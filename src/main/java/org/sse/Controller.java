@@ -10,9 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.sse.mapper.*;
 import org.sse.pojo.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.List;
 import java.util.concurrent.TransferQueue;
 
@@ -247,6 +246,17 @@ public class Controller {
         accountMapper.updateById(account);
     }
 
+    //验证用户数据，存在返回true，不存在返回false
+    @PostMapping("validateAccount")
+    public boolean validateAccount(@RequestBody Account account){
+        QueryWrapper<Account> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username",account.getUsername()).eq("password",account.getPassword());
+        Account target_account = (Account) accountMapper.selectObjs(queryWrapper);
+        if(target_account == null) {
+            return false;
+        }else return true;
+    }
+
     //上传头像,需要图像文件和用户对象
     @PostMapping("uploadPic")
     public String uploadPic(@RequestParam("file")MultipartFile file,Account account){
@@ -270,15 +280,20 @@ public class Controller {
         }
     }
 
-    //验证用户数据，存在返回true，不存在返回false
-    @PostMapping("validateAccount")
-    public boolean validateAccount(@RequestBody Account account){
-        QueryWrapper<Account> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username",account.getUsername()).eq("password",account.getPassword());
-        Account target_account = (Account) accountMapper.selectObjs(queryWrapper);
-        if(target_account == null) {
-            return false;
-        }else return true;
+    //展示图像
+    @GetMapping(value="/getPhotoById")
+    public void getPhotoById(final HttpServletResponse response,Account account) throws IOException {
+        byte[] data = account.getPic();
+        response.setContentType("image/jpeg");
+        response.setCharacterEncoding("UTF-8");
+        OutputStream outputSream = response.getOutputStream();
+        InputStream in = new ByteArrayInputStream(data);
+        int len = 0;
+        byte[] buf = new byte[1024];
+        while ((len = in.read(buf, 0, 1024)) != -1) {
+            outputSream.write(buf, 0, len);
+        }
+        outputSream.close();
     }
 
 }
