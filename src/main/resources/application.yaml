@@ -1,8 +1,19 @@
 
-
 spring:
   datasource:
-    username: factory
-    password: 'factory'
-    url: jdbc:mysql://127.0.0.1:3306/factory?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/mybatis
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+    jackson:
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: GMT+8
+      mvc:
+        throw-exception-if-no-handler-found: true
+      web:
+        resources:
+          add-mappings: false
+
+server:
+  port: 8181

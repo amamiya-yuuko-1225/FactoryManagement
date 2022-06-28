@@ -1,9 +1,8 @@
-package org.sse;
+package org.sse.Controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.gson.Gson;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +12,6 @@ import org.sse.pojo.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.List;
-import java.util.concurrent.TransferQueue;
 
 @RestController
 @SuppressWarnings("all")
@@ -21,37 +19,44 @@ import java.util.concurrent.TransferQueue;
 public class Controller {
     private Gson gson = new Gson();
 
-    //Factory------------------------------------------------------------------------------------------------
-    @Autowired
-    private FacrotyMapper facrotyMapper;
-    @GetMapping("getAllFactories")
-    public String getAllFactories () {
-        List<Factory> factories = facrotyMapper.selectList(null);
-        return gson.toJson(factories);
-    }
-    //通过设置了条件的对象进行条件查询
-    @PostMapping("getFactoriesByQuery")
-    public String getFactoriesByQuery(@RequestBody Factory factory){
-        QueryWrapper<Factory> factoryQueryWrapper = new QueryWrapper<>(factory);
-        List<Factory> factoryList = facrotyMapper.selectList(factoryQueryWrapper);
-        return gson.toJson(factoryList);
-    }
-    @PostMapping("addFactory")
-    public void addFactory (@RequestBody Factory factory) {
-        facrotyMapper.insert(factory);
-    }
-    @PostMapping("deleteFactory")
-    public void deleteFactory (@RequestBody Factory factory) {
-        facrotyMapper.deleteById(factory);
-    }
-    @PostMapping("updateFactory")
-    public void updateFactory (@RequestBody Factory factory) {
-        facrotyMapper.updateById(factory);
+    @RequestMapping("/test")
+    public String test(){
+        return "This is a test program!";
     }
 
-    @GetMapping("countAllFactory")
+
+    //Factory------------------------------------------------------------------------------------------------
+    @Autowired
+    private FactoryMapper factoryMapper;
+    @RequestMapping("/getAllFactories")
+    public String getAllFactories () {
+        List<Factory> factories = factoryMapper.selectList(null);
+        return gson.toJson(factories);
+    }
+
+    //通过设置了条件的对象进行条件查询
+    @PostMapping("/getFactoriesByQuery")
+    public String getFactoriesByQuery(@RequestBody Factory factory){
+        QueryWrapper<Factory> factoryQueryWrapper = new QueryWrapper<>(factory);
+        List<Factory> factoryList = factoryMapper.selectList(factoryQueryWrapper);
+        return gson.toJson(factoryList);
+    }
+    @PostMapping("/addFactory")
+    public void addFactory (@RequestBody Factory factory) {
+        factoryMapper.insert(factory);
+    }
+    @PostMapping("/deleteFactory")
+    public void deleteFactory (@RequestBody Factory factory) {
+        factoryMapper.deleteById((Serializable) factory);
+    }
+    @PostMapping("/updateFactory")
+    public void updateFactory (@RequestBody Factory factory) {
+        factoryMapper.updateById(factory);
+    }
+
+    @GetMapping("/countAllFactory")
     public long countAllFactories(){
-        long count =  facrotyMapper.selectCount(null);
+        long count =  factoryMapper.selectCount(null);
         return count;
     }
 
@@ -60,40 +65,40 @@ public class Controller {
     @Autowired
     private DeviceMapper deviceMapper;
 
-    @GetMapping("getAllDevice")
+    @GetMapping("/getAllDevice")
     public String getAllDevice () {
         List<Device> devices = deviceMapper.selectList(null);
         return gson.toJson(devices);
     }
     //通过设置了条件的对象进行条件查询
-    @PostMapping("getDeviceByQuery")
+    @PostMapping("/getDeviceByQuery")
     public String getDeviceByQuery(@RequestBody Device device){
         QueryWrapper<Device> deviceQueryWrapper = new QueryWrapper<>(device);
         List<Device> deviceList = deviceMapper.selectList(deviceQueryWrapper);
         return gson.toJson(deviceList);
     }
 
-    @PostMapping("addDevice")
+    @PostMapping("/addDevice")
     public void addDevice (@RequestBody Device device) {
         deviceMapper.insert(device);
     }
-    @PostMapping("deleteDevice")
+    @PostMapping("/deleteDevice")
     public void deleteDevice (@RequestBody Device device) {
-        deviceMapper.deleteById(device);
+        deviceMapper.deleteById((Serializable) device);
     }
-    @PostMapping("updateDevice")
+    @PostMapping("/updateDevice")
     public void updateDevice (@RequestBody Device device) {
         deviceMapper.updateById(device);
     }
 
-    @GetMapping("countAllDevice")
+    @GetMapping("/countAllDevice")
     public long countAllDevice(){
         long count =  deviceMapper.selectCount(null);
         return count;
     }
 
     //对可用设备计数
-    @GetMapping("countUsableDevice")
+    @GetMapping("/countUsableDevice")
     public long countUsableDevice(){
         QueryWrapper<Device> queryWrapper=new QueryWrapper();
         queryWrapper.eq("status",1);
@@ -105,28 +110,28 @@ public class Controller {
     @Autowired
     private ProductMapper productMapper;
 
-    @GetMapping("getAllProduct")
+    @RequestMapping("/getAllProduct")
     public String getAllProduct () {
         List<Product> products = productMapper.selectList(null);
         return gson.toJson(products);
     }
     //通过设置了条件的对象进行条件查询
-    @PostMapping("getProductBYQuery")
+    @PostMapping("/getProductBYQuery")
     public String getProductByQuery(@RequestBody Product product){
         QueryWrapper<Product> productQueryWrapper = new QueryWrapper<>(product);
         List<Product> productList = productMapper.selectList(productQueryWrapper);
         return gson.toJson(productList);
     }
 
-    @PostMapping("addProduct")
+    @PostMapping("/addProduct")
     public void addProduct (@RequestBody Product product) {
         productMapper.insert(product);
     }
-    @PostMapping("deleteProduct")
+    @PostMapping("/deleteProduct")
     public void deleteProduct (@RequestBody Product product) {
-        productMapper.deleteById(product);
+        productMapper.deleteById((Serializable) product);
     }
-    @PostMapping("updateProduct")
+    @PostMapping("/updateProduct")
     public void updateProduct (@RequestBody Product product) {
         productMapper.updateById(product);
     }
@@ -135,38 +140,38 @@ public class Controller {
     @Autowired
     private OrderMapper orderMapper;
 
-    @GetMapping("getAllOrder")
+    @RequestMapping("/getAllOrder")
     public String getAllOrder () {
         List<Order> orders = orderMapper.selectList(null);
         return gson.toJson(orders);
     }
     //通过设置了条件的对象进行条件查询
-    @PostMapping("getOrderByQuery")
+    @PostMapping("/getOrderByQuery")
     public String getOrderBYQuery(@RequestBody Order order){
         QueryWrapper<Order> orderQueryWrapper = new QueryWrapper<>(order);
         List<Order> orderList = orderMapper.selectList(orderQueryWrapper);
         return gson.toJson(orderList);
     }
-    @PostMapping("addOrder")
+    @PostMapping("/addOrder")
     public void addOrder (@RequestBody Order order) {
         orderMapper.insert(order);
     }
-    @PostMapping("deleteOrder")
+    @PostMapping("/deleteOrder")
     public void deleteOrder (@RequestBody Order order) {
-        orderMapper.deleteById(order);
+        orderMapper.deleteById((Serializable) order);
     }
-    @PostMapping("updateOrder")
+    @PostMapping("/updateOrder")
     public void updateOrder (@RequestBody Order order) {
         orderMapper.updateById(order);
     }
 
-    @GetMapping("countAllOrder")
+    @GetMapping("/countAllOrder")
     public long countAllOrder(){
         long count =  orderMapper.selectCount(null);
         return count;
     }
     //对完成的订单计数
-    @GetMapping("countDoneOrder")
+    @RequestMapping("/countDoneOrder")
     public long countDoneOrder(){
         QueryWrapper<Order> queryWrapper=new QueryWrapper();
         queryWrapper.eq("status",1);
@@ -178,26 +183,26 @@ public class Controller {
     @Autowired
     private GeneratePlanMapper generatePlanMapper;
 
-    @PostMapping("addGeneratePlan")
+    @PostMapping("/addGeneratePlan")
     public void addGeneratePlan (@RequestBody GeneratePlan generatePlan) {
         generatePlanMapper.insert(generatePlan);
     }
-    @PostMapping("deleteGeneratePlan")
+    @PostMapping("/deleteGeneratePlan")
     public void deleteGeneratePlan (@RequestBody GeneratePlan generatePlan) {
-        generatePlanMapper.deleteById(generatePlan);
+        generatePlanMapper.deleteById((Serializable) generatePlan);
     }
-    @PostMapping("updateGeneratePlan")
+    @PostMapping("/updateGeneratePlan")
     public void updateGeneratePlan (@RequestBody GeneratePlan generatePlan) {
         generatePlanMapper.updateById(generatePlan);
     }
 
-    @GetMapping("countAllGeneratePlan")
+    @RequestMapping("/countAllGeneratePlan")
     public long countAllGeneratePlan(){
         long count =  generatePlanMapper.selectCount(null);
         return count;
     }
     //对完成的生产计划计数
-    @GetMapping("countDoneGeneratePlan")
+    @RequestMapping("/countDoneGeneratePlan")
     public long countDoneGeneratePlan(){
         QueryWrapper<GeneratePlan> queryWrapper=new QueryWrapper();
         queryWrapper.eq("status",1);
@@ -208,7 +213,7 @@ public class Controller {
     //生产调度-----------------------------------------------------------------------------------------
 
     //根据一个变化量（产品对象形式）更新一个产品、订单、生产计划,返回更新后的生产计划
-    @PostMapping("updatePlanByProduct")
+    @PostMapping("/updatePlanByProduct")
     public String updataPlan(Product product){
         //更新产品数量
         QueryWrapper<Product> queryWrapperProduct = new QueryWrapper<>();
@@ -237,17 +242,17 @@ public class Controller {
 
     //Account-------------------------------------------------------------------------------------------
     private AccountMapper accountMapper;
-    @PostMapping("addAccount")
+    @PostMapping("/addAccount")
     public void addAccount (@RequestBody Account account) {
         accountMapper.insert(account);}
 
-    @PostMapping("updateAccount")
+    @PostMapping("/updateAccount")
     public void updateAccount(@RequestBody Account account){
         accountMapper.updateById(account);
     }
 
     //验证用户数据，存在返回true，不存在返回false
-    @PostMapping("validateAccount")
+    @PostMapping("/validateAccount")
     public boolean validateAccount(@RequestBody Account account){
         QueryWrapper<Account> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",account.getUsername()).eq("password",account.getPassword());
@@ -258,7 +263,7 @@ public class Controller {
     }
 
     //上传头像,需要图像文件和用户对象
-    @PostMapping("uploadPic")
+    @PostMapping("/uploadPic")
     public String uploadPic(@RequestParam("file")MultipartFile file,Account account){
         if(file.isEmpty()){
             return "upload failed!";
@@ -281,7 +286,7 @@ public class Controller {
     }
 
     //展示图像
-    @GetMapping(value="/getPhotoById")
+    @RequestMapping(value="/getPhotoById")
     public void getPhotoById(final HttpServletResponse response,Account account) throws IOException {
         byte[] data = account.getPic();
         response.setContentType("image/jpeg");
