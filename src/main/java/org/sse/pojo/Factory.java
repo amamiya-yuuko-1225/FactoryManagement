@@ -15,7 +15,7 @@ public class Factory {
     @TableId(type = IdType.AUTO)
     private int id;
 
-    private String factory_name;
+    private String factoryName;
     private String owner;
     private int profit;
     private int scale;

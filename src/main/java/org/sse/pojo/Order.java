@@ -14,9 +14,8 @@ public class Order {
     @TableId(type = IdType.AUTO)
     private int id;
     private String buyer;
-    private long product_id;
-    private int target_amount;
-    private int existing_amount;
+    private long productId;
+    private int targetAmount;
     private int status;
     private int value;
 }

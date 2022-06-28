@@ -14,10 +14,10 @@ public class GeneratePlan {
     @TableId(type = IdType.AUTO)
     private int id;
     private long product_id;
-    private int target_amount;
-    private int existing_amount;
-    private String start_time;
+    private int targetAmount;
+    private int existingAmount;
+    private String startAime;
     private String deadline;
-    private long factory_id;
+    private long factoryId;
     private int status;
 }

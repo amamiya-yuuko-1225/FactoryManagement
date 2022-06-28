@@ -222,18 +222,18 @@ public class Controller {
         exsiting_product.setAmount(exsiting_product.getAmount()+product.getAmount());
         this.updateProduct(exsiting_product);
 
-        //更新订单数量
-        QueryWrapper<Order> queryWrapperOrder = new QueryWrapper<>();
-        queryWrapperOrder.eq("product_id",product.getId());
-        Order exsiting_order = (Order) orderMapper.selectObjs(queryWrapperOrder);
-        exsiting_order.setExisting_amount(exsiting_product.getAmount());
-        this.updateOrder(exsiting_order);
+//        //更新订单数量
+//        QueryWrapper<Order> queryWrapperOrder = new QueryWrapper<>();
+//        queryWrapperOrder.eq("product_id",product.getId());
+//        Order exsiting_order = (Order) orderMapper.selectObjs(queryWrapperOrder);
+//        exsiting_order.setExisting_amount(exsiting_product.getAmount());
+//        this.updateOrder(exsiting_order);
 
         //更新计划
         QueryWrapper<GeneratePlan> queryWrapperPlan = new QueryWrapper<>();
         queryWrapperPlan.eq("product_id",product.getId());
         GeneratePlan exsiting_Plan = (GeneratePlan) generatePlanMapper.selectObjs(queryWrapperPlan);
-        exsiting_Plan.setExisting_amount(exsiting_product.getAmount());
+        exsiting_Plan.setExistingAmount(exsiting_product.getAmount());
         this.updateGeneratePlan(exsiting_Plan);
 
         //返回更新后的生产计划

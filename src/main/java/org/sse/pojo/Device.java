@@ -1,7 +1,5 @@
 package org.sse.pojo;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +12,10 @@ import java.util.List;
 public class Device {
     @TableId(type = IdType.AUTO)
     private int id;
-    private String device_name;
+
+
+    private String deviceName;
     private int status;
-    private String product_id;
+    private int product_id;
 
 }

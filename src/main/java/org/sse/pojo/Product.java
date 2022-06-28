@@ -14,9 +14,8 @@ public class Product {
 
     @TableId(type = IdType.AUTO)
     private int id;
-    private String product_name;
+    private String productName;
     private int amount;
     private int price;
-    private long device_id;
 
 }
