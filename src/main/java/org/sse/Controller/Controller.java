@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @SuppressWarnings("all")
-@CrossOrigin
+//@CrossOrigin
 public class Controller {
     private Gson gson = new Gson();
 

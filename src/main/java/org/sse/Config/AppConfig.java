@@ -30,7 +30,7 @@ import java.util.List;
 
 
 
-@Configuration
+//@Configuration
 public class AppConfig extends WebMvcConfigurationSupport {
 
 
