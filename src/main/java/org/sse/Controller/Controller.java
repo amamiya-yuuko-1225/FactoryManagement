@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @SuppressWarnings("all")
-@CrossOrigin(origins = {"*", "null"})
+@CrossOrigin
 public class Controller {
     private Gson gson = new Gson();
 
@@ -178,10 +178,15 @@ public class Controller {
         long count =  orderMapper.selectCount(queryWrapper);
         return count;
     }
-
     //GeneratePlan--------------------------------------------------------------------------------------------
     @Autowired
     private GeneratePlanMapper generatePlanMapper;
+
+    @RequestMapping("/getAllGeneratePlan")
+    public String getAllOGeneratePlan () {
+        List<GeneratePlan> generatePlans = generatePlanMapper.selectList(null);
+        return gson.toJson(generatePlans);
+    }
 
     @PostMapping("/addGeneratePlan")
     public void addGeneratePlan (@RequestBody GeneratePlan generatePlan) {
