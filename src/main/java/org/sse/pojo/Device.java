@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("devices")
-public class Device {
+public class Device implements Serializable {
     @TableId(type = IdType.AUTO)
     private int id;
 

@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("orders")
-public class Order {
+public class Order implements Serializable {
     @TableId(type = IdType.AUTO)
     private int id;
     private String buyer;
