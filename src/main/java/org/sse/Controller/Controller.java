@@ -306,4 +306,14 @@ public class Controller {
         outputSream.close();
     }
 
+
+    //Report------------------------------------------------------------------------------------
+    @Autowired
+    private ReportMapper reportMapper;
+
+    @RequestMapping("getReport")
+    public String getReport () {
+        List<Report> reportList = reportMapper.selectList(null);
+        return gson.toJson(reportList);
+    }
 }
