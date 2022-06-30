@@ -311,9 +311,14 @@ public class Controller {
     @Autowired
     private ReportMapper reportMapper;
 
-    @RequestMapping("getReport")
+    @RequestMapping("/getReport")
     public String getReport () {
         List<Report> reportList = reportMapper.selectList(null);
         return gson.toJson(reportList);
+    }
+
+    @PostMapping("/addReport")
+    public void addReport (@RequestBody Report report) {
+        reportMapper.insert(report);
     }
 }
